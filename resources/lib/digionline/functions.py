@@ -1179,9 +1179,12 @@ def play_video(endpoint, metadata, NAME, COOKIEJAR, SESSION, DATA_DIR):
   common_vars.__logger__.debug('Exit function')
 
 
-def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME, COOKIEJAR, SESSION):
+def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME, COOKIEJAR, SESSION, MYADDON):
   common_vars.__logger__ = logging.getLogger(NAME)
   common_vars.__logger__.debug('Enter function')
+
+  # Read the user preferences stored in the addon configuration
+  common_functions.read_AddonSettings(MYADDON, common_vars.__ServiceID__)
   
   common_vars.__logger__.debug('M3U_FILE = ' + M3U_FILE)
   common_vars.__logger__.debug('START_NUMBER = ' + str(START_NUMBER))
@@ -1219,7 +1222,13 @@ def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME,
         _channel_metadata_ = json.loads(channel['metadata'])
         common_vars.__logger__.debug('Channel streamId: ' + str(_channel_metadata_['new-info']['meta']['streamId']))
         
-        _line_ = "#EXTINF:0 tvg-id=\"digionline__" + str(_channel_metadata_['new-info']['meta']['streamId']) + "\" tvg-name=\"" + channel['name'] + "\" tvg-logo=\"" + channel['logo'] + "\" tvg-chno=\"" + str(_CHNO_) + "\" group-title=\"" + category['title'] + "\"," + channel['name']
+        if common_vars.__config_PVRIPTVSimpleClientIntegration_ShowAccountName__ == 'true':
+          category['title'] = category['title'] + " "*(common_vars.__group_padding_size__ - len(category['title']))
+          channel['name'] = channel['name'] + " "*(common_vars.__channel_padding_size__ - len(channel['name']))
+          
+          _line_ = "#EXTINF:0 tvg-id=\"digionline__" + str(_channel_metadata_['new-info']['meta']['streamId']) + "\" tvg-name=\"" + channel['name'] + common_vars.__PVRIPTVSimpleClientIntegration_digionline_DisplayName__ + "\" tvg-logo=\"" + channel['logo'] + "\" tvg-chno=\"" + str(_CHNO_) + "\" group-title=\"" + category['title'] + common_vars.__PVRIPTVSimpleClientIntegration_digionline_DisplayName__ + "\"," + channel['name'] + common_vars.__PVRIPTVSimpleClientIntegration_digionline_DisplayName__
+        else:
+          _line_ = "#EXTINF:0 tvg-id=\"digionline__" + str(_channel_metadata_['new-info']['meta']['streamId']) + "\" tvg-name=\"" + channel['name'] + "\" tvg-logo=\"" + channel['logo'] + "\" tvg-chno=\"" + str(_CHNO_) + "\" group-title=\"" + category['title'] + "\"," + channel['name']
 
         _url_ = common_functions.get_url(action='play', account='digionline.ro', channel_endpoint=channel['endpoint'], channel_metadata=channel['metadata'])
         _play_url_ = "plugin://" + common_vars.__AddonID__ + "/" + _url_
@@ -1236,9 +1245,12 @@ def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME,
   return _CHNO_
 
 
-def PVRIPTVSimpleClientIntegration_update_EPG_file(XML_FILE, NAME, COOKIEJAR, SESSION):
+def PVRIPTVSimpleClientIntegration_update_EPG_file(XML_FILE, NAME, COOKIEJAR, SESSION, MYADDON):
   common_vars.__logger__ = logging.getLogger(NAME)
   common_vars.__logger__.debug('Enter function')
+
+  # Read the user preferences stored in the addon configuration
+  common_functions.read_AddonSettings(MYADDON, common_vars.__ServiceID__)
   
   common_vars.__logger__.debug('XML_FILE = ' + XML_FILE)
 
@@ -1317,7 +1329,13 @@ def PVRIPTVSimpleClientIntegration_update_EPG_file(XML_FILE, NAME, COOKIEJAR, SE
 
         _line_ = "  <channel id=\"digionline__" + _epg_['data']['id_stream'] + "\">"
         _data_file_.write(_line_ + "\n")
-        _line_ = "    <display-name>" + _epg_['data']['stream_desc'] + "</display-name>"
+        
+        if common_vars.__config_PVRIPTVSimpleClientIntegration_ShowAccountName__ == 'true':
+          _epg_['data']['stream_desc'] = _epg_['data']['stream_desc'] + " "*(common_vars.__channel_padding_size__ - len(_epg_['data']['stream_desc']))
+          _line_ = "    <display-name>" + _epg_['data']['stream_desc'] + common_vars.__PVRIPTVSimpleClientIntegration_digionline_DisplayName__ + "</display-name>"
+        else:
+          _line_ = "    <display-name>" + _epg_['data']['stream_desc'] + "</display-name>"
+
         _data_file_.write(_line_ + "\n")
         _line_ = "  </channel>"
         _data_file_.write(_line_ + "\n")

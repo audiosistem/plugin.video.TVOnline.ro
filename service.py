@@ -154,13 +154,13 @@ def PVRIPTVSimpleClientIntegration_update_m3u_file():
   
     # digionline.ro
     if common_vars.__config_digionline_Enabled__ == 'true':
-      _current_channel_number_ = digionline_functions.PVRIPTVSimpleClientIntegration_update_m3u_file(_tmp_m3u_file_, _current_channel_number_, common_vars.__ServiceID__, common_vars.__digionline_CookieJar__, common_vars.__digionline_ServiceSession__)
+      _current_channel_number_ = digionline_functions.PVRIPTVSimpleClientIntegration_update_m3u_file(_tmp_m3u_file_, _current_channel_number_, common_vars.__ServiceID__, common_vars.__digionline_CookieJar__, common_vars.__digionline_ServiceSession__, MyServiceAddon)
 
     common_vars.__logger__.debug('_current_channel_number_ = ' + str(_current_channel_number_))
 
     # protvplus.ro
     if common_vars.__config_protvplus_Enabled__ == 'true':
-      _current_channel_number_ = protvplus_functions.PVRIPTVSimpleClientIntegration_update_m3u_file(_tmp_m3u_file_, _current_channel_number_, common_vars.__ServiceID__, common_vars.__protvplus_CookieJar__, common_vars.__protvplus_ServiceSession__)
+      _current_channel_number_ = protvplus_functions.PVRIPTVSimpleClientIntegration_update_m3u_file(_tmp_m3u_file_, _current_channel_number_, common_vars.__ServiceID__, common_vars.__protvplus_CookieJar__, common_vars.__protvplus_ServiceSession__, MyServiceAddon)
 
     common_vars.__logger__.debug('_current_channel_number_ = ' + str(_current_channel_number_))
  
@@ -266,10 +266,10 @@ def PVRIPTVSimpleClientIntegration_update_EPG_file():
     _data_file_.close()
   
     if common_vars.__config_digionline_Enabled__ == 'true':
-      digionline_functions.PVRIPTVSimpleClientIntegration_update_EPG_file(_tmp_epg_file_, common_vars.__ServiceID__, common_vars.__digionline_CookieJar__, common_vars.__digionline_ServiceSession__)
+      digionline_functions.PVRIPTVSimpleClientIntegration_update_EPG_file(_tmp_epg_file_, common_vars.__ServiceID__, common_vars.__digionline_CookieJar__, common_vars.__digionline_ServiceSession__, MyServiceAddon)
 
     if common_vars.__config_protvplus_Enabled__ == 'true':
-      protvplus_functions.PVRIPTVSimpleClientIntegration_update_EPG_file(_tmp_epg_file_, common_vars.__ServiceID__, common_vars.__protvplus_CookieJar__, common_vars.__protvplus_ServiceSession__)
+      protvplus_functions.PVRIPTVSimpleClientIntegration_update_EPG_file(_tmp_epg_file_, common_vars.__ServiceID__, common_vars.__protvplus_CookieJar__, common_vars.__protvplus_ServiceSession__, MyServiceAddon)
 
     _data_file_ = open(_tmp_epg_file_, 'a', encoding='utf-8')
     _data_file_.write("</tv>" + "\n")

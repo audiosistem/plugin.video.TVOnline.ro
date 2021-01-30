@@ -530,9 +530,12 @@ def get_channels(NAME, COOKIEJAR, SESSION):
   return _channels_
 
 
-def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME, COOKIEJAR, SESSION):
+def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME, COOKIEJAR, SESSION, MYADDON):
   common_vars.__logger__ = logging.getLogger(NAME)
   common_vars.__logger__.debug('Enter function')
+
+  # Read the user preferences stored in the addon configuration
+  common_functions.read_AddonSettings(MYADDON, common_vars.__ServiceID__)
   
   common_vars.__logger__.debug('M3U_FILE = ' + M3U_FILE)
   common_vars.__logger__.debug('START_NUMBER = ' + str(START_NUMBER))
@@ -545,8 +548,14 @@ def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME,
   _data_file_ = open(M3U_FILE, 'a', encoding='utf-8')
   
   for channel in channels:
-    _line_ = "#EXTINF:0 tvg-id=\"protvplus__" + str(channel['id']) + "\" tvg-name=\"" + channel['name'] + "\" tvg-logo=\"" + channel['logo'] + "\" tvg-chno=\"" + str(_CHNO_) + "\" group-title=\"PRO TV PLUS\"," + channel['name']
-    
+    if common_vars.__config_PVRIPTVSimpleClientIntegration_ShowAccountName__ == 'true':
+      _group_title_ = 'PRO TV PLUS'
+      _group_title_ = _group_title_ + " "*(common_vars.__group_padding_size__ - len(_group_title_))
+      channel['name'] = channel['name'] + " "*(common_vars.__channel_padding_size__ - len(channel['name']))
+      _line_ = "#EXTINF:0 tvg-id=\"protvplus__" + str(channel['id']) + "\" tvg-name=\"" + channel['name'] + common_vars.__PVRIPTVSimpleClientIntegration_protvplus_DisplayName__ + "\" tvg-logo=\"" + channel['logo'] + "\" tvg-chno=\"" + str(_CHNO_) + "\" group-title=\"" + _group_title_ + common_vars.__PVRIPTVSimpleClientIntegration_protvplus_DisplayName__ + "\"," + channel['name'] + common_vars.__PVRIPTVSimpleClientIntegration_protvplus_DisplayName__
+    else:
+      _line_ = "#EXTINF:0 tvg-id=\"protvplus__" + str(channel['id']) + "\" tvg-name=\"" + channel['name'] + "\" tvg-logo=\"" + channel['logo'] + "\" tvg-chno=\"" + str(_CHNO_) + "\" group-title=\"PRO TV PLUS\"," + channel['name']
+
     _url_ = common_functions.get_url(action='play', account='protvplus.ro', channel_endpoint=channel['data-url'])
     _play_url_ = "plugin://" + common_vars.__AddonID__ + "/" + _url_
 
@@ -562,9 +571,12 @@ def PVRIPTVSimpleClientIntegration_update_m3u_file(M3U_FILE, START_NUMBER, NAME,
   return _CHNO_
   
 
-def PVRIPTVSimpleClientIntegration_update_EPG_file(XML_FILE, NAME, COOKIEJAR, SESSION):
+def PVRIPTVSimpleClientIntegration_update_EPG_file(XML_FILE, NAME, COOKIEJAR, SESSION, MYADDON):
   common_vars.__logger__ = logging.getLogger(NAME)
   common_vars.__logger__.debug('Enter function')
+
+  # Read the user preferences stored in the addon configuration
+  common_functions.read_AddonSettings(MYADDON, common_vars.__ServiceID__)
   
   common_vars.__logger__.debug('XML_FILE = ' + XML_FILE)
 
@@ -586,7 +598,11 @@ def PVRIPTVSimpleClientIntegration_update_EPG_file(XML_FILE, NAME, COOKIEJAR, SE
 
      _line_ = "  <channel id=\"protvplus__" + channel['id'] + "\">"
      _data_file_.write(_line_ + "\n")
-     _line_ = "    <display-name>" + channel['name'] + "</display-name>"
+     if common_vars.__config_PVRIPTVSimpleClientIntegration_ShowAccountName__ == 'true':
+       channel['name'] = channel['name'] + " "*(common_vars.__channel_padding_size__ - len(channel['name']))
+       _line_ = "    <display-name>" + channel['name'] + common_vars.__PVRIPTVSimpleClientIntegration_protvplus_DisplayName__ + "</display-name>"
+     else:
+       _line_ = "    <display-name>" + channel['name'] + "</display-name>"
      _data_file_.write(_line_ + "\n")
      _line_ = "  </channel>"
      _data_file_.write(_line_ + "\n")

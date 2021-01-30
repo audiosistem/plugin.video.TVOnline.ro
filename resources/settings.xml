@@ -49,6 +49,7 @@
     <setting label="Data file(s)" type="lsep"/>
     <setting id="PVRIPTVSimpleClientIntegration_m3u_FileRefreshTime" label="Update m3u file, daily at" type="time" default="01:00"/>
     <setting id="PVRIPTVSimpleClientIntegration_EPG_FileRefreshTime" label="Update XML file, daily at" type="time" default="01:10"/>
+    <setting id="PVRIPTVSimpleClientIntegration_ShowAccountName" label="Show account name in channel and group names" type="bool" default="false"/>
   </category>
 </settings>
 

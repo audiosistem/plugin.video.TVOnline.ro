@@ -81,10 +81,12 @@ __handle__ = ''
 __logger__ = ''
 
 
-
 # Constants
 __minute__ = (1 * 60)
 __day__ = (24 * 60 * 60)
+
+__channel_padding_size__ = 50
+__group_padding_size__ = 60
 
 # Directory holding the cached data. 
 __digionline_cache_dir__ = 'cached_data/digionline.ro'
@@ -123,6 +125,14 @@ __PVRIPTVSimpleClientIntegration_DataDir__ = 'PVRIPTVSimpleClientIntegration'
 __PVRIPTVSimpleClientIntegration_m3u_FileName__ = __AddonID__ + '.m3u'
 __PVRIPTVSimpleClientIntegration_EPG_FileName__ = __AddonID__ + '.xml' 
 
+# Whether to show the provider name in the generated files
+__PVRIPTVSimpleClientIntegration_ShowAccountName__ = ''
+
+# The string to display for each provider
+__PVRIPTVSimpleClientIntegration_digionline_DisplayName__ = '[digionline.ro]'
+__PVRIPTVSimpleClientIntegration_protvplus_DisplayName__ = '[protvplus.ro]'
+
+
 # Time of day for refreshing the contents in the data files.
 __PVRIPTVSimpleClientIntegration_m3u_FileRefreshTime__ = ''
 __PVRIPTVSimpleClientIntegration_EPG_FileRefreshTime__ = ''
@@ -134,5 +144,4 @@ __PVRIPTVSimpleClientIntegration_EPG_FileOldRefreshTime__ = ''
 # Time since the last update of data files. If this time has passed, the data files will be updated.
 __PVRIPTVSimpleClientIntegration_m3u_FileMaxAge__ = (1 * __day__) + (1 * __minute__)
 __PVRIPTVSimpleClientIntegration_EPG_FileMaxAge__ = (1 * __day__) + (1 * __minute__)
-
 

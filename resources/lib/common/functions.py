@@ -64,7 +64,8 @@ def read_AddonSettings(__MyAddon__, NAME):
   common_vars.__logger__.debug('[ Addon settings ] PVRIPTVSimpleClientIntegration_m3u_FileRefreshTime = ' + str(common_vars.__config_PVRIPTVSimpleClientIntegration_m3u_FileRefreshTime__))
   common_vars.__config_PVRIPTVSimpleClientIntegration_EPG_FileRefreshTime__ = __MyAddon__.getSetting('PVRIPTVSimpleClientIntegration_EPG_FileRefreshTime')
   common_vars.__logger__.debug('[ Addon settings ] PVRIPTVSimpleClientIntegration_EPG_FileRefreshTime = ' + str(common_vars.__config_PVRIPTVSimpleClientIntegration_EPG_FileRefreshTime__))
-
+  common_vars.__config_PVRIPTVSimpleClientIntegration_ShowAccountName__ = __MyAddon__.getSetting('PVRIPTVSimpleClientIntegration_ShowAccountName')
+  common_vars.__logger__.debug('[ Addon settings ] PVRIPTVSimpleClientIntegration_ShowAccountName = ' + str(common_vars.__config_PVRIPTVSimpleClientIntegration_ShowAccountName__))
 
 def get_url(**kwargs):
   ####
